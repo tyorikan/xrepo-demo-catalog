@@ -1,0 +1,54 @@
+openapi: 3.0.3
+info:
+  title: catalog-service
+  version: 1.0.0
+paths:
+  /v1/items/{id}:
+    get:
+      operationId: getItem
+      responses:
+        "200":
+          description: The catalog item and its active offers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ItemResponse"
+        "404":
+          description: Item not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+components:
+  schemas:
+    ItemResponse:
+      type: object
+      required: [id, items]
+      properties:
+        id:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Offer"
+    Offer:
+      type: object
+      required: [price, currency]
+      properties:
+        price:
+          type: integer
+          description: Tax-inclusive retail price per unit in whole Japanese yen.
+        currency:
+          type: string
+          description: ISO 4217 currency code.
+        quantity:
+          type: integer
+          description: Units available in stock.
+        status:
+          type: string
+          enum: [ON_SALE, SOLD_OUT, HIDDEN]
+    Problem:
+      type: object
+      properties:
+        errorCode:
+          type: string

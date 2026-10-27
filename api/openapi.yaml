@@ -33,11 +33,11 @@ components:
             $ref: "#/components/schemas/Offer"
     Offer:
       type: object
-      required: [price, currency]
+      required: [unitPriceExclTax, currency]
       properties:
-        price:
-          type: integer
-          description: Tax-inclusive retail price per unit in whole Japanese yen.
+        unitPriceExclTax:
+          type: number
+          description: Tax-exclusive base unit price before 10% consumption tax.
         currency:
           type: string
           description: ISO 4217 currency code.

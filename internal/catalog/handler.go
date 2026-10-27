@@ -11,7 +11,7 @@ import (
 )
 
 type Offer struct {
-	Price    int    `json:"price"`
+	UnitPriceExclTax float64 `json:"unitPriceExclTax"`
 	Currency string `json:"currency"`
 	Quantity int    `json:"quantity"`
 	Status   string `json:"status"`
@@ -52,13 +52,13 @@ func handleGetItem(w http.ResponseWriter, r *http.Request) {
 	_ = cacheTTL
 
 	itemID := chi.URLParam(r, "id")
-	// Tax-inclusive retail price in whole Japanese yen (JPY integer minor unit).
-	retailPriceYen := 1980
+	// Changed to tax-exclusive floating-point amount (dividing by 1.10 consumption tax).
+	retailPriceExclTax := float64(1980) / 1.10
 	resp := ItemResponse{
 		ID: itemID,
 		Items: []Offer{
 			{
-				Price:    retailPriceYen,
+				UnitPriceExclTax: retailPriceExclTax,
 				Currency: "JPY",
 				Quantity: 12,
 				Status:   "ON_SALE",
